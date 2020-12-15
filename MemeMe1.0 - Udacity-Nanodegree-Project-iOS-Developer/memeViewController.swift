@@ -148,7 +148,7 @@ extension memeViewController: UITextFieldDelegate {
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 50)!,
+            NSAttributedString.Key.font: UIFont(name: "Impact", size: 50)!,
             NSAttributedString.Key.strokeWidth:  -5
         ]
         

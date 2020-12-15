@@ -14,6 +14,7 @@
 		1F1FEB2F25878563005828A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F1FEB2E25878563005828A8 /* Assets.xcassets */; };
 		1F1FEB3225878563005828A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F1FEB3025878563005828A8 /* LaunchScreen.storyboard */; };
 		1F1FEB3C2587B9A1005828A8 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FEB3B2587B9A1005828A8 /* Meme.swift */; };
+		1FD637822588E92A007F47D8 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FD637812588E92A007F47D8 /* Impact.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		1F1FEB3125878563005828A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F1FEB3325878563005828A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F1FEB3B2587B9A1005828A8 /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
+		1FD637812588E92A007F47D8 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,10 +66,19 @@
 				1F1FEB3B2587B9A1005828A8 /* Meme.swift */,
 				1F1FEB2B25878562005828A8 /* Main.storyboard */,
 				1F1FEB2E25878563005828A8 /* Assets.xcassets */,
+				1FD6377C2588E589007F47D8 /* Fonts */,
 				1F1FEB3025878563005828A8 /* LaunchScreen.storyboard */,
 				1F1FEB3325878563005828A8 /* Info.plist */,
 			);
 			path = "MemeMe1.0 - Udacity-Nanodegree-Project-iOS-Developer";
+			sourceTree = "<group>";
+		};
+		1FD6377C2588E589007F47D8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1FD637812588E92A007F47D8 /* Impact.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +138,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FD637822588E92A007F47D8 /* Impact.ttf in Resources */,
 				1F1FEB3225878563005828A8 /* LaunchScreen.storyboard in Resources */,
 				1F1FEB2F25878563005828A8 /* Assets.xcassets in Resources */,
 				1F1FEB2D25878562005828A8 /* Main.storyboard in Resources */,
