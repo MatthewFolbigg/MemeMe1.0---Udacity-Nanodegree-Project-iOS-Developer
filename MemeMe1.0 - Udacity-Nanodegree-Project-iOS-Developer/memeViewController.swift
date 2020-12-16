@@ -21,6 +21,8 @@ class memeViewController: UIViewController {
     @IBOutlet var shareButton: UIBarButtonItem!
     @IBOutlet var memeView: UIView!
     
+    //MARK: Variables
+    //Meme details are svaed here once the share button is tapped
     var savedMeme: Meme!
     
     var memeImage: UIImage!
@@ -50,12 +52,18 @@ class memeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        //Makes sure text size scales to maintain relative size to image.
+        setMemeTextFieldStyle(for: allTextFields)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        //Removes observer for keyboard show/hide notifications
         NotificationCenter.default.removeObserver(self)
     }
     
-    //MARK:ToolBar Actions
+    //MARK:ToolBar IB Actions
     @IBAction func cameraButtonDidTapped(_ sender: Any) {
         getImageFrom(source: .camera)
     }
@@ -64,7 +72,7 @@ class memeViewController: UIViewController {
         getImageFrom(source: .photoLibrary)
     }
     
-    //MARK: Reset Button Action
+    //MARK: Reset IB Action
     @IBAction func resetButtonDidTapped() {
         returnAllTextFields()
         setDefaultUI()
@@ -73,24 +81,35 @@ class memeViewController: UIViewController {
         setMemeTextFieldStyle(for: allTextFields)
     }
     
+    //MARK: Share IB Action
+    @IBAction func shareButtonDidTapped() {
+        returnAllTextFields()
+        memeImage = generateMemedImage()
+        let activityController = UIActivityViewController(activityItems: [memeImage!], applicationActivities: nil)
+        present(activityController, animated: true) {
+            self.saveMeme()
+        }
+    }
     
-    //MARK: UI
+    //MARK: Set UI
     func setDefaultUI() {
         //Background Colour
         view.backgroundColor = .black
+        memeImageView.backgroundColor = .darkGray
         //Text Field Defaults
         setupTextFields()
         //Image
         setupImageView()
         //Buttons & Bars
-        setShareButton() //(Must be set after image to ensure correct state)
-        setCameraButton()
+        setupShareButton()
+        setupCameraButton()
         setupNavigationBar()
         setupToolBar()
-        setTextFontButton()
-        setTextSizeButton()
+        setupTextFontButton()
+        setupTextSizeButton()
     }
     
+    //MARK: UI setup methods
     func setupTextFields() {
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
@@ -114,7 +133,7 @@ class memeViewController: UIViewController {
         imageToolbar.tintColor = .systemTeal
     }
     
-    func setShareButton() {
+    func setupShareButton() {
         if memeImageView.image == nil {
             shareButton.isEnabled = false
         } else {
@@ -122,7 +141,7 @@ class memeViewController: UIViewController {
         }
     }
     
-    func setCameraButton() {
+    func setupCameraButton() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             cameraButton.isEnabled = true
         } else {
@@ -130,7 +149,7 @@ class memeViewController: UIViewController {
         }
     }
     
-    func setTextFontButton() {
+    func setupTextFontButton() {
         let impactMenuItem = UIAction(title: "Impact") {_ in
             self.memeFont = "Impact"
             self.setMemeTextFieldStyle(for: self.allTextFields)
@@ -148,7 +167,7 @@ class memeViewController: UIViewController {
         textFontButton.menu = fontMenu
     }
     
-    func setTextSizeButton() {
+    func setupTextSizeButton() {
         let smallMenuItem = UIAction(title: "Small") {_ in
             self.textModifier = 14
             self.updateTextSize()
@@ -173,6 +192,7 @@ class memeViewController: UIViewController {
 
 
 
+
 //MARK: Meme Image Handling
 extension memeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -188,12 +208,13 @@ extension memeViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.editedImage] as? UIImage {
             memeImageView.image = image
-            setMemeTextFieldStyle(for: allTextFields)
+            memeImageView.backgroundColor = .black
         }
-        setShareButton()
+        setupShareButton()
         dismiss(animated: true, completion: nil)
     }
 }
+
 
 
 
@@ -223,6 +244,11 @@ extension memeViewController: UITextFieldDelegate {
         }
     }
     
+    //Changes text size to maintain relative size compared to the meme image when roataing device
+    func updateTextSize() {
+        textSize = memeImageView.frame.height/textModifier
+    }
+    
     func returnAllTextFields() {
         //Used to prevent loosing current text if a text field is still selected when the share button or camera/photo library button is tapped.
         topTextField.resignFirstResponder()
@@ -244,6 +270,7 @@ extension memeViewController: UITextFieldDelegate {
         return true
     }
     
+    //MARK: Keyboard Nitifications
     //Prevent keyboard from hiding bottom text field
     @objc func keyboardWillShow(notification: NSNotification) {
         if isKeyboardShown == false && keyboardCoversCurrentTextField == true {
@@ -260,17 +287,9 @@ extension memeViewController: UITextFieldDelegate {
         }
         isKeyboardShown = false
     }
-    
-    //Changes text size to maintain relative size compared to the meme image when roataing device
-    func updateTextSize() {
-        textSize = memeImageView.frame.height/textModifier
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setMemeTextFieldStyle(for: allTextFields)
-    }
 }
+
+
 
 
 
@@ -288,15 +307,5 @@ extension memeViewController {
     
     func saveMeme() {
         savedMeme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, background: memeImageView.image!, memeImage: memeImage)
-    }
-    
-    //MARK: Share Action
-    @IBAction func shareButtonDidTapped() {
-        returnAllTextFields()
-        memeImage = generateMemedImage()
-        let activityController = UIActivityViewController(activityItems: [memeImage!], applicationActivities: nil)
-        present(activityController, animated: true) {
-            self.saveMeme()
-        }
     }
 }
