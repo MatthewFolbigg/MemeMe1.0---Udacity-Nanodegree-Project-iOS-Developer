@@ -16,15 +16,25 @@ class memeViewController: UIViewController {
     @IBOutlet var bottomTextField: UITextField!
     @IBOutlet var imageToolbar: UIToolbar!
     @IBOutlet var cameraButton: UIBarButtonItem!
+    @IBOutlet var textFontButton: UIBarButtonItem!
+    @IBOutlet var textSizeButton: UIBarButtonItem!
     @IBOutlet var shareButton: UIBarButtonItem!
+    @IBOutlet var memeView: UIView!
     
     var memeImage: UIImage!
     var isKeyboardShown: Bool!
     var keyboardCoversCurrentTextField: Bool!
-        
+    var allTextFields: [UITextField]!
+    var textSize: CGFloat!
+    
+    //Text Style Settings
+    var textModifier: CGFloat = 10 //FIXME: CHANGE THIS TO BEIGN SET BY SETTING PAGE
+    var memeFont: String = "Impact"
+    
     //MARK:Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        allTextFields = [topTextField, bottomTextField]
         setDefaultUI()
         topTextField.delegate = self
         bottomTextField.delegate = self
@@ -56,7 +66,11 @@ class memeViewController: UIViewController {
     @IBAction func resetButtonDidTapped() {
         returnAllTextFields()
         setDefaultUI()
+        memeFont = "Impact"
+        textModifier = 10
+        setMemeTextFieldStyle(for: allTextFields)
     }
+    
     
     //MARK: UI
     func setDefaultUI() {
@@ -71,12 +85,14 @@ class memeViewController: UIViewController {
         setCameraButton()
         setupNavigationBar()
         setupToolBar()
+        setTextFontButton()
+        setTextSizeButton()
     }
     
     func setupTextFields() {
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
-        setMemeTextFieldStyle(for: [topTextField, bottomTextField])
+        setMemeTextFieldStyle(for: allTextFields)
     }
     
     func setupNavigationBar() {
@@ -86,7 +102,7 @@ class memeViewController: UIViewController {
     }
     
     func setupImageView() {
-        memeImageView.backgroundColor = .black
+        memeImageView.backgroundColor = .darkGray
         memeImageView.image = nil
         memeImageView.contentMode = .scaleAspectFit
     }
@@ -111,6 +127,45 @@ class memeViewController: UIViewController {
             cameraButton.isEnabled = false
         }
     }
+    
+    func setTextFontButton() {
+        let impactMenuItem = UIAction(title: "Impact") {_ in
+            self.memeFont = "Impact"
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        let helveticaMenuItem = UIAction(title: "Helvetica") {_ in
+            self.memeFont = "Helvetica Bold"
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        let futuraBoldMenuItem = UIAction(title: "Futura") {_ in
+            self.memeFont = "Futura Bold"
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        
+        let fontMenu = UIMenu(title: "Font", children: [impactMenuItem, helveticaMenuItem, futuraBoldMenuItem])
+        textFontButton.menu = fontMenu
+    }
+    
+    func setTextSizeButton() {
+        let smallMenuItem = UIAction(title: "Small") {_ in
+            self.textModifier = 14
+            self.updateTextSize()
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        let mediumMenuItem = UIAction(title: "Medium") {_ in
+            self.textModifier = 10
+            self.updateTextSize()
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        let largeMenuItem = UIAction(title: "Large") {_ in
+            self.textModifier = 6
+            self.updateTextSize()
+            self.setMemeTextFieldStyle(for: self.allTextFields)
+    }
+        
+        let sizeMenu = UIMenu(title: "Text Size", children: [smallMenuItem, mediumMenuItem, largeMenuItem])
+        textSizeButton.menu = sizeMenu
+    }
 }
 
 
@@ -123,13 +178,15 @@ extension memeViewController: UIImagePickerControllerDelegate, UINavigationContr
         returnAllTextFields()
         let pickerController = UIImagePickerController()
         pickerController.sourceType = source
+        pickerController.allowsEditing = true
         pickerController.delegate = self
         present(pickerController, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
+        if let image = info[.editedImage] as? UIImage {
             memeImageView.image = image
+            setMemeTextFieldStyle(for: allTextFields)
         }
         setShareButton()
         dismiss(animated: true, completion: nil)
@@ -145,13 +202,15 @@ extension memeViewController: UITextFieldDelegate {
     //Text Field Sytle & Text style
     func setMemeTextFieldStyle(for textFields: [UITextField]) {
         
+        updateTextSize()
+        
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont(name: "Impact", size: 50)!,
+            NSAttributedString.Key.font: UIFont(name: memeFont, size: textSize)!,
             NSAttributedString.Key.strokeWidth:  -5
         ]
-        
+
         for field in textFields {
             field.defaultTextAttributes = memeTextAttributes
             field.textAlignment = .center
@@ -199,6 +258,16 @@ extension memeViewController: UITextFieldDelegate {
         }
         isKeyboardShown = false
     }
+    
+    //Changes text size to maintain relative size compared to the meme image when roataing device
+    func updateTextSize() {
+        textSize = memeImageView.frame.height/textModifier
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setMemeTextFieldStyle(for: allTextFields)
+    }
 }
 
 
@@ -208,18 +277,10 @@ extension memeViewController {
     
     func generateMemedImage() -> UIImage {
 
-        imageToolbar.isHidden = true
-        navigationController?.navigationBar.isHidden = true
-
-        // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-
-        imageToolbar.isHidden = false
-        navigationController?.navigationBar.isHidden = false
-        
+        let renderer = UIGraphicsImageRenderer(size: memeView.frame.size)
+        let memedImage = renderer.image { ctx in
+            memeView.drawHierarchy(in: memeView.bounds, afterScreenUpdates: true)
+        }
         return memedImage
     }
     
