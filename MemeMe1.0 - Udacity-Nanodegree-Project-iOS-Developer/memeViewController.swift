@@ -21,6 +21,8 @@ class memeViewController: UIViewController {
     @IBOutlet var shareButton: UIBarButtonItem!
     @IBOutlet var memeView: UIView!
     
+    var savedMeme: Meme!
+    
     var memeImage: UIImage!
     var isKeyboardShown: Bool!
     var keyboardCoversCurrentTextField: Bool!
@@ -285,7 +287,7 @@ extension memeViewController {
     }
     
     func saveMeme() {
-        let currentMeme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, background: memeImageView.image!, memeImage: memeImage)
+        savedMeme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, background: memeImageView.image!, memeImage: memeImage)
     }
     
     //MARK: Share Action
