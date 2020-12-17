@@ -228,10 +228,10 @@ extension memeViewController: UITextFieldDelegate {
         updateTextSize()
         
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont(name: memeFont, size: textSize)!,
-            NSAttributedString.Key.strokeWidth:  -5
+            .foregroundColor: UIColor.white,
+            .strokeColor: UIColor.black,
+            .font: UIFont(name: memeFont, size: textSize)!,
+            .strokeWidth:  -5,
         ]
 
         for field in textFields {
