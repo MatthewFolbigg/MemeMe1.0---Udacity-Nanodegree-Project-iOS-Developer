@@ -86,9 +86,13 @@ class memeViewController: UIViewController {
         returnAllTextFields()
         memeImage = generateMemedImage()
         let activityController = UIActivityViewController(activityItems: [memeImage!], applicationActivities: nil)
-        present(activityController, animated: true) {
-            self.saveMeme()
+        activityController.completionWithItemsHandler = {
+            (activity, completed, items, error) in
+            if completed {
+                self.saveMeme()
+            }
         }
+        present(activityController, animated: true)
     }
     
     //MARK: Set UI
