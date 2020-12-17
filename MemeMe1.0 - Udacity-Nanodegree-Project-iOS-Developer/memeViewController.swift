@@ -146,11 +146,7 @@ class memeViewController: UIViewController {
     }
     
     func setupCameraButton() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            cameraButton.isEnabled = true
-        } else {
-            cameraButton.isEnabled = false
-        }
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
     }
     
     func setupTextFontButton() {
