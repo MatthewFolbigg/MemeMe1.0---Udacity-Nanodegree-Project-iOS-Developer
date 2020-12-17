@@ -32,7 +32,7 @@ class memeViewController: UIViewController {
     var textSize: CGFloat!
     
     //Text Style Settings
-    var textModifier: CGFloat = 10 //FIXME: CHANGE THIS TO BEIGN SET BY SETTING PAGE
+    var textModifier: CGFloat = 10
     var memeFont: String = "Impact"
     
     //MARK:Life Cycle
