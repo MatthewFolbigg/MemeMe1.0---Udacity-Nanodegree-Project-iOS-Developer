@@ -8,7 +8,7 @@
 import UIKit
 
 //MARK: Meme Creator View Controller
-class memeViewController: UIViewController {
+class MemeViewController: UIViewController {
     
     //MARK:Outlets and Variables
     @IBOutlet var memeImageView: UIImageView!
@@ -189,12 +189,8 @@ class memeViewController: UIViewController {
     }
 }
 
-
-
-
-
 //MARK: Meme Image Handling
-extension memeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MemeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func getImageFrom(source: UIImagePickerController.SourceType) {
         returnAllTextFields()
@@ -215,12 +211,8 @@ extension memeViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 }
 
-
-
-
-
 //MARK: Meme Text Handling
-extension memeViewController: UITextFieldDelegate {
+extension MemeViewController: UITextFieldDelegate {
     
     //Text Field Sytle & Text style
     func setMemeTextFieldStyle(for textFields: [UITextField]) {
@@ -289,12 +281,8 @@ extension memeViewController: UITextFieldDelegate {
     }
 }
 
-
-
-
-
 //MARK: Meme Object Generation & Sharing
-extension memeViewController {
+extension MemeViewController {
     
     func generateMemedImage() -> UIImage {
 
@@ -306,6 +294,6 @@ extension memeViewController {
     }
     
     func saveMeme() {
-        savedMeme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, background: memeImageView.image!, memeImage: memeImage)
+        savedMeme = Meme(topText: topTextField.text!, bottomeText: bottomTextField.text!, originalImage: memeImageView.image!, memeImage: memeImage)
     }
 }
