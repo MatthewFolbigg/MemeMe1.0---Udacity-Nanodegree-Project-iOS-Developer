@@ -274,9 +274,7 @@ extension MemeViewController: UITextFieldDelegate {
     }
     
     @objc func keyboardWillHide() {
-        if isKeyboardShown == true && keyboardCoversCurrentTextField == true {
-            view.frame.origin.y = 0
-        }
+        view.frame.origin.y = 0
         isKeyboardShown = false
     }
 }
@@ -295,5 +293,10 @@ extension MemeViewController {
     
     func saveMeme() {
         savedMeme = Meme(topText: topTextField.text!, bottomeText: bottomTextField.text!, originalImage: memeImageView.image!, memeImage: memeImage)
+    
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(savedMeme)
     }
+    
 }
