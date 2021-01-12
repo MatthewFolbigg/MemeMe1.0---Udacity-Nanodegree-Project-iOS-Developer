@@ -51,7 +51,7 @@ class MemeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
+        
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         //Makes sure text size scales to maintain relative size to image.
@@ -95,6 +95,11 @@ class MemeViewController: UIViewController {
         present(activityController, animated: true)
     }
     
+    //MARK: Done IB Action
+    @IBAction func doneButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     //MARK: Set UI
     func setDefaultUI() {
         //Background Colour
@@ -107,7 +112,6 @@ class MemeViewController: UIViewController {
         //Buttons & Bars
         setupShareButton()
         setupCameraButton()
-        setupNavigationBar()
         setupToolBar()
         setupTextFontButton()
         setupTextSizeButton()
@@ -119,13 +123,7 @@ class MemeViewController: UIViewController {
         bottomTextField.text = "BOTTOM"
         setMemeTextFieldStyle(for: allTextFields)
     }
-    
-    func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .black
-        navigationController?.navigationBar.tintColor = .systemTeal
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
-    }
-    
+        
     func setupImageView() {
         memeImageView.backgroundColor = .darkGray
         memeImageView.image = nil
@@ -298,5 +296,4 @@ extension MemeViewController {
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(savedMeme)
     }
-    
 }
