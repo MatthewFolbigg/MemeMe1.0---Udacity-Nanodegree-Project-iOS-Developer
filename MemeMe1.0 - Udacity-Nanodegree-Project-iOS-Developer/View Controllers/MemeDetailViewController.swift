@@ -23,5 +23,11 @@ class MemeDetailViewController: UIViewController {
         
         memeImageView.image = selectedMeme.memeImage
     }
+    
+    @IBAction func editButtonDidTapped() {
+        let destinationController = storyboard?.instantiateViewController(identifier: "MemeViewController") as! MemeViewController
+        destinationController.memeIsSavedAtIndex = selectedMemeIndex
+        navigationController?.pushViewController(destinationController, animated: true)
+    }
 
 }

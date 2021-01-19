@@ -70,7 +70,10 @@ extension memeTableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let destinationController = storyboard?.instantiateViewController(identifier: "MemeDetailViewController") as! MemeDetailViewController
+        destinationController.selectedMemeIndex = indexPath.row
+        destinationController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(destinationController, animated: true)
     }
     
 }

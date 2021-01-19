@@ -81,5 +81,12 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let destinationController = storyboard?.instantiateViewController(identifier: "MemeDetailViewController") as! MemeDetailViewController
+        destinationController.selectedMemeIndex = indexPath.row
+        destinationController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(destinationController, animated: true)
+    }
 
 }

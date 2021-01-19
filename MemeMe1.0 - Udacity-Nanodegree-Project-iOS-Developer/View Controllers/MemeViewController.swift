@@ -24,6 +24,7 @@ class MemeViewController: UIViewController {
     //MARK: Variables
     //Meme details are svaed here once the share button is tapped
     var savedMeme: Meme!
+    var memeIsSavedAtIndex: Int?
     
     var memeImage: UIImage!
     var isKeyboardShown: Bool!
@@ -42,6 +43,9 @@ class MemeViewController: UIViewController {
         setDefaultUI()
         topTextField.delegate = self
         bottomTextField.delegate = self
+        if let index = memeIsSavedAtIndex {
+            loadMeme(index: index)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,7 +101,8 @@ class MemeViewController: UIViewController {
     
     //MARK: Done IB Action
     @IBAction func doneButtonDidTapped() {
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     //MARK: Set UI
@@ -294,6 +299,24 @@ extension MemeViewController {
     
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(savedMeme)
+        if let index = memeIsSavedAtIndex {
+            //replaces existing if in edit mode
+            appDelegate.memes[index] = savedMeme
+        } else {
+            appDelegate.memes.append(savedMeme)
+            memeIsSavedAtIndex = appDelegate.memes.count - 1 //Prevents duplicate saves when shared multiple times.
+        }
+    }
+    
+    func loadMeme(index: Int) {
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        let meme = appDelegate.memes[index]
+        
+        topTextField.text = meme.topText
+        bottomTextField.text = meme.bottomeText
+        memeImageView.image = meme.originalImage
+        
+        setupShareButton()
     }
 }
