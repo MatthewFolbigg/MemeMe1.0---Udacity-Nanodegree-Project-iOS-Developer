@@ -101,8 +101,24 @@ class MemeViewController: UIViewController {
     
     //MARK: Done IB Action
     @IBAction func doneButtonDidTapped() {
-        //navigationController?.popViewController(animated: true)
-        navigationController?.popToRootViewController(animated: true)
+        //If an image has been added but the meme has not already been saved, asks the user to decied if the meme should be saved or deleted.
+        if memeIsSavedAtIndex == nil && memeImageView.image != nil {
+            let alertController = UIAlertController(title: "Save Meme?", message: "This meme has not been shared. Would you like to save it anyway?", preferredStyle: .alert)
+            let saveAction = UIAlertAction(title: "Save", style: .default) {_ in
+                self.returnAllTextFields()
+                self.memeImage = self.generateMemedImage()
+                self.saveMeme()
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            let dontSaveAction = UIAlertAction(title: "Delete", style: .destructive) {_ in
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            alertController.addAction(saveAction)
+            alertController.addAction(dontSaveAction)
+            self.present(alertController, animated: true)
+        } else {
+            navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     //MARK: Set UI

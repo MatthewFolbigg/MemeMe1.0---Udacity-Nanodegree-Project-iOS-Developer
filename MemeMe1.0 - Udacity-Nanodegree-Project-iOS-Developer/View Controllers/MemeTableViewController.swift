@@ -51,7 +51,7 @@ class memeTableViewController: UIViewController {
 
 //MARK: Table View Setup
 extension memeTableViewController: UITableViewDelegate, UITableViewDataSource {
-    
+        
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return savedMemes.count
     }
@@ -62,7 +62,7 @@ extension memeTableViewController: UITableViewDelegate, UITableViewDataSource {
         let meme = savedMemes[indexPath.row]
         
         //MARK: Cell UI
-        cell.memeImageView.image = meme.originalImage
+        cell.memeImageView.image = meme.memeImage
         cell.topMemeLabel.text = meme.topText
         cell.bottomMemeLabel.text = meme.bottomeText
         
@@ -76,4 +76,12 @@ extension memeTableViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(destinationController, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let object = UIApplication.shared.delegate as! AppDelegate
+            object.memes.remove(at: indexPath.row)
+            savedMemes = object.memes
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
 }
