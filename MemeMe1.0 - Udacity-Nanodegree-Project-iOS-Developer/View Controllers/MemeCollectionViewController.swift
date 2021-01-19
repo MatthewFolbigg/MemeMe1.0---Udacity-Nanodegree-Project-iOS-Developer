@@ -12,6 +12,7 @@ class MemeCollectionViewController: UIViewController {
     
     //MARK: IB Outlets
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var flowLayout: UICollectionViewFlowLayout!
     
     //MARK: Variables
     var savedMemes: [Meme] = []
@@ -20,6 +21,7 @@ class MemeCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        setCollectionViewFlowLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +33,11 @@ class MemeCollectionViewController: UIViewController {
         collectionView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        segue.destination.hidesBottomBarWhenPushed = true
+    }
+    
+
     //MARK: UI Setup
     func setUI() {
         view.backgroundColor = .black
@@ -62,6 +69,17 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         cell.memeImageView.image = meme.memeImage
         
         return cell
+    }
+    
+    //MARK: Flow Layout
+    func setCollectionViewFlowLayout() {
+        let space:CGFloat = 1.0
+        let screenWidth = view.frame.size.width
+        let itemWidth = screenWidth/3.4
+
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
     }
 
 }
