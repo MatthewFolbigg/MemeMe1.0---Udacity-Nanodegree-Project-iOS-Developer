@@ -80,7 +80,6 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
