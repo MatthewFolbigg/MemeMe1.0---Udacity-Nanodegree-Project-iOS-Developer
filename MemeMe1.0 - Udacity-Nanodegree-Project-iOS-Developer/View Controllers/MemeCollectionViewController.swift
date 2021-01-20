@@ -74,7 +74,7 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
     //MARK: Flow Layout
     func setCollectionViewFlowLayout() {
         let space:CGFloat = 1
-        let screenWidth = collectionView.frame.width
+        let screenWidth = collectionView.frame.size.width
         let itemWidth = (screenWidth/3) - (space*2)
 
         flowLayout.minimumInteritemSpacing = space
