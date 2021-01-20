@@ -73,13 +73,14 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
     
     //MARK: Flow Layout
     func setCollectionViewFlowLayout() {
-        let space:CGFloat = 1.0
-        let screenWidth = view.frame.size.width
-        let itemWidth = screenWidth/3.4
+        let space:CGFloat = 1
+        let screenWidth = collectionView.frame.width
+        let itemWidth = (screenWidth/3) - (space*2)
 
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -88,5 +89,7 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         destinationController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(destinationController, animated: true)
     }
+    
+    
 
 }

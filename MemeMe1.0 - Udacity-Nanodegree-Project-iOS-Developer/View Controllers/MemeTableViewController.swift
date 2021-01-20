@@ -66,6 +66,8 @@ extension memeTableViewController: UITableViewDelegate, UITableViewDataSource {
         cell.topMemeLabel.text = meme.topText
         cell.bottomMemeLabel.text = meme.bottomeText
         
+        cell.memeImageView.layer.cornerRadius = 10
+        
         return cell
     }
     

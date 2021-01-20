@@ -102,15 +102,15 @@ class MemeViewController: UIViewController {
     //MARK: Done IB Action
     @IBAction func doneButtonDidTapped() {
         //If an image has been added but the meme has not already been saved, asks the user to decied if the meme should be saved or deleted.
-        if memeIsSavedAtIndex == nil && memeImageView.image != nil {
-            let alertController = UIAlertController(title: "Save Meme?", message: "This meme has not been shared. Would you like to save it anyway?", preferredStyle: .alert)
+        returnAllTextFields()
+        if memeImageView.image != nil {
+            let alertController = UIAlertController(title: "Save Changes", message: "Would you like to save changes made to this meme?", preferredStyle: .alert)
             let saveAction = UIAlertAction(title: "Save", style: .default) {_ in
-                self.returnAllTextFields()
                 self.memeImage = self.generateMemedImage()
                 self.saveMeme()
                 self.navigationController?.popToRootViewController(animated: true)
             }
-            let dontSaveAction = UIAlertAction(title: "Delete", style: .destructive) {_ in
+            let dontSaveAction = UIAlertAction(title: "Don't Save", style: .destructive) {_ in
                 self.navigationController?.popToRootViewController(animated: true)
             }
             alertController.addAction(saveAction)
@@ -332,6 +332,7 @@ extension MemeViewController {
         topTextField.text = meme.topText
         bottomTextField.text = meme.bottomeText
         memeImageView.image = meme.originalImage
+        memeImageView.backgroundColor = .black
         
         setupShareButton()
     }
