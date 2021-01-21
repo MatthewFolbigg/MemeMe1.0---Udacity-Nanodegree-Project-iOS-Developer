@@ -55,12 +55,12 @@ class MemeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-        
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+            
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         //Makes sure text size scales to maintain relative size to image.
         setMemeTextFieldStyle(for: allTextFields)
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //Removes observer for keyboard show/hide notifications
@@ -296,6 +296,7 @@ extension MemeViewController: UITextFieldDelegate {
         view.frame.origin.y = 0
         isKeyboardShown = false
     }
+    
 }
 
 //MARK: Meme Object Generation & Sharing

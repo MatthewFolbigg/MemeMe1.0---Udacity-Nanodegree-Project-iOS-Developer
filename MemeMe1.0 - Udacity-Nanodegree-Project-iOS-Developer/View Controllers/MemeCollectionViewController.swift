@@ -89,6 +89,4 @@ extension MemeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         navigationController?.pushViewController(destinationController, animated: true)
     }
     
-    
-
 }
